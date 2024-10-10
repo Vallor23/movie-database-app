@@ -12,8 +12,13 @@ module.exports = {
         'almostBlack': '#1C1C1E',
         'brightAmberHover': '#FFD600',
         'brightAmberDark': '#D89A00',
+        'btnColor':'oklch(49.12% 0.3096 275.75 /1)',
+        'customColor': 'oklch(32.1785% 0.02476 255.701624 / 1)',
+      },
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif'],
       }
     },
   },
-  plugins: [],
+  plugins: [require('daisyui')],
 }
