@@ -82,14 +82,13 @@ export const fetchMoviesByGenres = async (selectedGenres,currentPage,total_pages
     } 
 }
 //Fetch movies by genres
-export const fetchTvByGenres = async (selectedGenres,currentPage,total_pages) => {
+export const fetchTvByGenres = async (selectedGenres,currentPage) => {
     try {
         const response = await axios.get(`${BASE_URL}/discover/tv`,{
             params: {
                 api_key: API_KEY,
                 with_genres:selectedGenres,//Pass the selected genres to the API
                 page:currentPage,
-                total_pages:total_pages,
                 sort_by:'release_date.desc',
             }
         });
@@ -123,12 +122,22 @@ export const fetchTvTrailer = async ({movieId}) => {
 
 
 export const fetchMovieCredits = async (movieId) => {
-    const response = await axios.get(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`);
-    return response.data;
-  };
+    try {
+        const response = await axios.get(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed fetching movie credits:', error);
+        throw error;
+    }
+};
 
 export const fetchTvCredits = async (movieId) => {
-    const response = await axios.get(`${BASE_URL}/tv/${movieId}/credits?api_key=${API_KEY}`);
-    return response.data;
+    try {
+        const response = await axios.get(`${BASE_URL}/tv/${movieId}/credits?api_key=${API_KEY}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed fetching tv credits:', error);
+        throw error;
+    }
   };
   
