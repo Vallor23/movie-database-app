@@ -1,38 +1,44 @@
 import { useState } from "react";
 
 import { FaSearch } from "react-icons/fa";
-import { ImSpinner2 } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
-const Searchbar = ({onSearch,loading}) => {
+const Searchbar = ({onSearch,loading,className}) => {
     const [query,setQuery] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSearch(query);// Call the parent component's onSearch function, passing the current query
-        setQuery('');
+        if (query.trim()) {
+            navigate(`/search?q=${query}`)//Redirect to search page with query
+        }
+        if (onSearch) {
+            onSearch(query);// Call the parent component's onSearch function, passing the current query
+            setQuery('');
+        }  
     }
 
   return (
     <form 
         onSubmit={handleSubmit}
-        className="flex gap-2 justify-center mx-auto px-4 sm:px-0"
+        className={`flex gap-2 justify-center mx-auto px-4 sm:px-0 ${className}`}
     >
         <input 
             type="text"
             value={query}
             onChange={(e)=>setQuery(e.target.value)}
             placeholder="Search for a movie..."
-            className="mt-2 p-2 rounded-md bg-darkCharcoal text-white w-full focus:outline-none focus:ring-2 focus:ring-brightAmber transition-colors sm:w-9/12 md:8/12 lg:w-6/12 xl:w-5/12"
-            aria-label="Search for a movie..."//To improve accessibility for screen readers
+            className="p-2 flex-grow rounded-md bg-darkCharcoal/75 text-white w-full focus:outline-none focus:ring-2 focus:ring-brightAmber transition-colors sm:w-9/12 md:8/12 lg:w-6/12 xl:w-5/12c placeholder:text-white"
+            aria-label="Search for a movie..."// To improve accessibility for screen readers
             required
         />
-        <button 
+        <button
             type="submit" 
-            className="bg-brightAmber mt-2 px-4 py-2  rounded-md transition hover:bg-brightAmberHover active:bg-brightAmberDark sm:px-3 sm:py-2"
+            className="px-4 py-2 rounded-md bg-brightAmber text-darkCharcoal transition hover:bg-brightAmberHover active:bg-brightAmberDark flex items-center justify-center"
             aria-label="Search"
+            disabled={loading}  // Disable button when loading
         >
-            {/* <FaSearch /> */}
-            {loading ? <ImSpinner2 /> : <FaSearch />}{/* conditionally show spinner or icon */}
+         <FaSearch />
         </button>
     </form>
   )
